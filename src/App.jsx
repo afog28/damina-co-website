@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Zap, TrendingUp, Shield, Check } from 'lucide-react'
@@ -10,45 +10,16 @@ gsap.registerPlugin(ScrollTrigger)
 const HERO_IMAGE =
   'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80'
 
-function EmailForm({ dark = false, id }) {
-  const [email, setEmail] = useState('')
-  const [done, setDone] = useState(false)
-
-  if (done) {
-    return (
-      <p className="font-sans text-sm font-medium" style={{ color: '#0D9488' }}>
-        You're in. First issue coming soon.
-      </p>
-    )
-  }
-
+function SubscribeButton({ dark = false }) {
   return (
-    <form
-      id={id}
-      onSubmit={(e) => { e.preventDefault(); if (email) setDone(true) }}
-      className="flex flex-col sm:flex-row gap-2.5 w-full max-w-sm"
+    <a
+      href="#subscribe"
+      className="btn-magnetic inline-flex items-center px-7 py-3.5 rounded-full font-sans font-semibold text-sm text-white"
+      style={{ backgroundColor: '#0D9488' }}
     >
-      <input
-        type="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter your email"
-        className={`flex-1 min-w-0 px-4 py-3 rounded-full font-sans text-sm focus:outline-none transition-colors ${
-          dark
-            ? 'bg-white/10 border border-white/15 text-white placeholder:text-white/40 focus:border-teal/50'
-            : 'bg-white border border-light-slate/70 text-navy placeholder:text-slate/40 focus:border-teal/50'
-        }`}
-      />
-      <button
-        type="submit"
-        className="btn-magnetic px-5 py-3 rounded-full font-sans font-semibold text-sm text-white shrink-0"
-        style={{ backgroundColor: '#0D9488' }}
-      >
-        <span className="btn-bg rounded-full" style={{ backgroundColor: '#0b7c72' }} />
-        <span>Subscribe</span>
-      </button>
-    </form>
+      <span className="btn-bg rounded-full" style={{ backgroundColor: '#0b7c72' }} />
+      <span>Subscribe — It's Free</span>
+    </a>
   )
 }
 
@@ -81,6 +52,15 @@ export default function App() {
   const heroRef = useRef(null)
   const cardsRef = useRef(null)
   const ctaRef = useRef(null)
+  const subscribeRef = useRef(null)
+
+  useEffect(() => {
+    if (!document.querySelector('script[src="https://link.damina.co/js/form_embed.js"]')) {
+      const script = document.createElement('script')
+      script.src = 'https://link.damina.co/js/form_embed.js'
+      document.head.appendChild(script)
+    }
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -103,6 +83,14 @@ export default function App() {
         {
           y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08,
           scrollTrigger: { trigger: ctaRef.current, start: 'top 75%' },
+        }
+      )
+      gsap.fromTo(
+        '.subscribe-item',
+        { y: 24, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', stagger: 0.08,
+          scrollTrigger: { trigger: subscribeRef.current, start: 'top 78%' },
         }
       )
     })
@@ -155,15 +143,15 @@ export default function App() {
           </h2>
 
           <p
-            className="hero-item font-sans text-lg leading-relaxed max-w-md mb-8"
+            className="hero-item font-sans text-lg leading-relaxed max-w-md mb-10"
             style={{ color: 'rgba(248,247,244,0.65)' }}
           >
             Practical AI education for business owners who want real results.
           </p>
 
           <div className="hero-item">
-            <EmailForm dark id="subscribe" />
-            <p className="font-sans text-sm mt-3" style={{ color: 'rgba(248,247,244,0.35)' }}>
+            <SubscribeButton dark />
+            <p className="font-sans text-sm mt-4" style={{ color: 'rgba(248,247,244,0.35)' }}>
               Free weekly insights. Unsubscribe anytime.
             </p>
           </div>
@@ -235,10 +223,44 @@ export default function App() {
           </ul>
 
           <div className="cta-item">
-            <EmailForm dark />
-            <p className="font-sans text-sm mt-3" style={{ color: 'rgba(248,247,244,0.3)' }}>
-              Free weekly insights. Unsubscribe anytime.
+            <SubscribeButton dark />
+          </div>
+        </div>
+      </section>
+
+      {/* ── SUBSCRIBE — off-white ───────────────────────────────── */}
+      <section
+        id="subscribe"
+        ref={subscribeRef}
+        className="py-24 px-6 md:px-12 bg-off-white"
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className="subscribe-item mb-10">
+            <h2 className="font-display font-bold text-3xl md:text-4xl text-navy mb-3 leading-tight">
+              Join the Newsletter
+            </h2>
+            <p className="font-sans text-base md:text-lg text-slate max-w-xl leading-relaxed">
+              Free weekly insights on AI for your business. No fluff, just what works.
             </p>
+          </div>
+          <div className="subscribe-item" style={{ maxWidth: 480, height: 358 }}>
+            <iframe
+              src="https://link.damina.co/widget/form/1uv5gSb28WUSWVsg06aS"
+              style={{ width: '100%', height: '100%', border: 'none', borderRadius: 3 }}
+              id="inline-1uv5gSb28WUSWVsg06aS"
+              data-layout="{'id':'INLINE'}"
+              data-trigger-type="alwaysShow"
+              data-trigger-value=""
+              data-activation-type="alwaysActivated"
+              data-activation-value=""
+              data-deactivation-type="neverDeactivate"
+              data-deactivation-value=""
+              data-form-name="Damina subscribe"
+              data-height="358"
+              data-layout-iframe-id="inline-1uv5gSb28WUSWVsg06aS"
+              data-form-id="1uv5gSb28WUSWVsg06aS"
+              title="Damina subscribe"
+            />
           </div>
         </div>
       </section>

@@ -1,8 +1,4 @@
-import { useState } from 'react'
-
 export default function Footer() {
-  const [email, setEmail] = useState('')
-  const [done, setDone] = useState(false)
 
   return (
     <footer className="noise-overlay" style={{ backgroundColor: '#0A1628' }}>
@@ -50,34 +46,14 @@ export default function Footer() {
               style={{ color: 'rgba(248,247,244,0.3)' }}>
               Subscribe to our newsletter
             </p>
-            {done ? (
-              <p className="font-sans text-sm font-medium text-teal">
-                You're in. First issue coming soon.
-              </p>
-            ) : (
-              <form
-                onSubmit={(e) => { e.preventDefault(); if (email) setDone(true) }}
-                className="flex gap-2"
-              >
-                <input
-                  type="email"
-                  required
-                  placeholder="Your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 min-w-0 px-3.5 py-2.5 rounded-full font-sans text-sm text-off-white placeholder:text-off-white/25 bg-white/6 border focus:outline-none focus:border-teal/40 transition-colors"
-                  style={{ borderColor: 'rgba(255,255,255,0.1)' }}
-                />
-                <button
-                  type="submit"
-                  className="btn-magnetic px-4 py-2.5 rounded-full font-sans font-semibold text-sm text-white shrink-0"
-                  style={{ backgroundColor: '#0D9488' }}
-                >
-                  <span className="btn-bg rounded-full" style={{ backgroundColor: '#0b7c72' }} />
-                  <span>Go</span>
-                </button>
-              </form>
-            )}
+            <a
+              href="#subscribe"
+              className="btn-magnetic inline-flex items-center px-6 py-3 rounded-full font-sans font-semibold text-sm text-white"
+              style={{ backgroundColor: '#0D9488' }}
+            >
+              <span className="btn-bg rounded-full" style={{ backgroundColor: '#0b7c72' }} />
+              <span>Subscribe — It's Free</span>
+            </a>
           </div>
         </div>
 
